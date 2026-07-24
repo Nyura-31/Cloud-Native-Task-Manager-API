@@ -1,0 +1,11 @@
+# Copy this file to terraform.tfvars and replace this value with an AMI ID
+# available in the selected AWS region (for example, a current Amazon Linux AMI).
+ami_id = "ami-0123456789abcdef0"
+
+# Optional configuration overrides.
+aws_region    = "us-east-1"
+instance_type = "t3.micro"
+instance_name = "task-manager-api"
+
+# Uncomment and set this to an existing EC2 key pair name to enable SSH key access.
+# key_name = "my-ec2-key"

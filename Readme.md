@@ -206,6 +206,29 @@ Workflow results are available in the repository’s **Actions** tab. Any failed
 
 ---
 
+## Terraform Infrastructure
+
+The `terraform` directory provisions an EC2 instance, its security group, and an Elastic IP in the account's default VPC. Terraform does not contain AWS credentials; authenticate through the AWS CLI, environment variables, or an IAM role before applying the configuration.
+
+Create your local variables file and set `ami_id` to an AMI available in the selected region:
+
+```bash
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Then initialize Terraform, review the proposed infrastructure, and create it:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+Terraform outputs the instance ID, Elastic IP address, and public DNS name after a successful apply. Review the generated plan carefully before confirming creation because AWS resources can incur charges.
+
+---
+
 ## Deployment
 
 The application will be deployed to an AWS EC2 instance using Docker and Nginx, with HTTPS enabled via Let's Encrypt. Infrastructure provisioning is managed using Terraform, and deployment automation is handled through GitHub Actions.
