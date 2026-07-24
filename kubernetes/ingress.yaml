@@ -1,0 +1,35 @@
+# Publishes the Task Manager API through an Nginx Ingress controller.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: task-manager-api
+  namespace: task-manager
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          # Routes the base API path to the application service.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: task-manager-api
+                port:
+                  number: 80
+          # Routes health checks to the application service.
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: task-manager-api
+                port:
+                  number: 80
+          # Routes all task endpoints, including /tasks/:id, to the application service.
+          - path: /tasks
+            pathType: Prefix
+            backend:
+              service:
+                name: task-manager-api
+                port:
+                  number: 80
