@@ -195,6 +195,17 @@ The API remains mapped directly to `http://localhost:3000` for local development
 
 ---
 
+## Continuous Integration
+
+The GitHub Actions workflow at `.github/workflows/node.yml` runs on every push and pull request targeting `main`. It restores cached npm dependencies, runs `npm ci`, and then:
+
+- runs `npm test` when the package defines a test script; or
+- starts the Express app on an ephemeral port and closes it cleanly as a startup smoke test when no test script exists.
+
+Workflow results are available in the repository’s **Actions** tab. Any failed install, test, or startup check fails the workflow.
+
+---
+
 ## Deployment
 
 The application will be deployed to an AWS EC2 instance using Docker and Nginx, with HTTPS enabled via Let's Encrypt. Infrastructure provisioning is managed using Terraform, and deployment automation is handled through GitHub Actions.
