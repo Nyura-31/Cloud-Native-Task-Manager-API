@@ -123,6 +123,37 @@ npm start
 
 ---
 
+## Linux and Shell Automation
+
+The application code and shell scripts are located in the `TaskManager` directory. Run these commands from that directory on Linux, macOS, or WSL:
+
+```bash
+cd TaskManager
+chmod +x scripts/*.sh
+```
+
+Start the API, installing dependencies only when `node_modules` is missing:
+
+```bash
+./scripts/start.sh
+```
+
+Install dependencies and verify that a temporary API instance starts and responds to its health endpoint:
+
+```bash
+./scripts/build.sh
+```
+
+Check the health of an API already running on port 3000:
+
+```bash
+./scripts/health-check.sh
+```
+
+The health-check script prints `Application is healthy` when `http://localhost:3000/health` is reachable; otherwise it prints `Application is not running` and exits with a non-zero status.
+
+---
+
 ## Running with Docker
 
 Build the Docker image:
