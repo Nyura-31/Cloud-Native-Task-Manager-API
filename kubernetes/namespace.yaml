@@ -1,0 +1,5 @@
+# Isolates all Task Manager API resources in their own Kubernetes namespace.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: task-manager

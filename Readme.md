@@ -229,6 +229,21 @@ Terraform outputs the instance ID, Elastic IP address, and public DNS name after
 
 ---
 
+## Kubernetes Deployment
+
+The `kubernetes` directory deploys two Task Manager API replicas into the `task-manager` namespace. Build or publish the `task-manager-api:latest` image so it is available to your Kubernetes cluster, then apply the manifests from the repository root:
+
+```bash
+kubectl apply -f kubernetes/
+kubectl get pods -n task-manager
+kubectl get svc -n task-manager
+kubectl get ingress -n task-manager
+```
+
+The Ingress requires an Nginx Ingress controller and routes `/`, `/health`, and `/tasks` to the API service. For a remote cluster, update `kubernetes/deployment.yaml` with the image name in your container registry.
+
+---
+
 ## Deployment
 
 The application will be deployed to an AWS EC2 instance using Docker and Nginx, with HTTPS enabled via Let's Encrypt. Infrastructure provisioning is managed using Terraform, and deployment automation is handled through GitHub Actions.
