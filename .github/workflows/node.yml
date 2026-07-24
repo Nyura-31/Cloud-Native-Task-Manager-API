@@ -43,24 +43,5 @@ jobs:
             npm test
           else
             echo "No npm test script found; running server startup smoke test."
-            node - <<'NODE'
-            const app = require('./src/app');
-
-            const server = app.listen(0, '127.0.0.1', () => {
-              console.log('Server started successfully.');
-              server.close((error) => {
-                if (error) {
-                  console.error(error);
-                  process.exitCode = 1;
-                } else {
-                  console.log('Server stopped cleanly.');
-                }
-              });
-            });
-
-            server.on('error', (error) => {
-              console.error(error);
-              process.exitCode = 1;
-            });
-            NODE
+            node -e "const app = require('./src/app'); const server = app.listen(0, '127.0.0.1', () => { console.log('Server started successfully.'); server.close((error) => { if (error) { console.error(error); process.exitCode = 1; } else { console.log('Server stopped cleanly.'); } }); }); server.on('error', (error) => { console.error(error); process.exitCode = 1; });"
           fi
