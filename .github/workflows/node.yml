@@ -39,9 +39,17 @@ jobs:
       # Runs project tests when available; otherwise performs a clean server startup smoke test.
       - name: Run tests or verify server startup
         run: |
-          if node -e "const { scripts = {} } = require('./package.json'); process.exit(scripts.test ? 0 : 1)"; then
+          if npm run | grep -qE '^[[:space:]]+test([[:space:]]|$)'; then
             npm test
           else
             echo "No npm test script found; running server startup smoke test."
-            node -e "const app = require('./src/app'); const server = app.listen(0, '127.0.0.1', () => { console.log('Server started successfully.'); server.close((error) => { if (error) { console.error(error); process.exitCode = 1; } else { console.log('Server stopped cleanly.'); } }); }); server.on('error', (error) => { console.error(error); process.exitCode = 1; });"
+            cd src
+            node server.js &
+            server_pid=$!
+            trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+            sleep 5
+            curl --fail --silent --show-error http://127.0.0.1:3000/health
+            kill "$server_pid"
+            wait "$server_pid" 2>/dev/null || true
+            trap - EXIT
           fi
