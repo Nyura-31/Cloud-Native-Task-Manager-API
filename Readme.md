@@ -176,6 +176,25 @@ docker-compose up
 
 ---
 
+## Running Behind Nginx
+
+Docker Compose starts the API and an Nginx reverse proxy on the same internal Docker network. From the `TaskManager` directory, run:
+
+```bash
+docker compose up --build
+```
+
+Nginx listens on port `80` and forwards the supported routes to the API service on port `3000`:
+
+```bash
+curl http://localhost/health
+curl http://localhost/tasks
+```
+
+The API remains mapped directly to `http://localhost:3000` for local development. The Nginx configuration is in `TaskManager/nginx/nginx.conf` and forwards the original host, client IP, forwarding chain, and request protocol as proxy headers.
+
+---
+
 ## Deployment
 
 The application will be deployed to an AWS EC2 instance using Docker and Nginx, with HTTPS enabled via Let's Encrypt. Infrastructure provisioning is managed using Terraform, and deployment automation is handled through GitHub Actions.
